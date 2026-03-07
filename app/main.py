@@ -26,10 +26,11 @@ app = FastAPI(
 
 @app.post("/api/v1/detect", response_model=DetectionResponse, summary="Detectar objetos en una imagen")
 async def detect_objects(file: UploadFile) -> DetectionResponse:
-    if not file.content_type not in ["image/jpeg", "image/png"]:
+    # CORRECCIÓN: validar correctamente el content_type
+    if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="El archivo debe ser una imagen jpeg o png.")
     try:
-        image_bytes = await file.read() # DA UN ESTADO DE ESPERA PARA PODER LEER LOS BYTES DE LA IMAGEN SIN COMPROMETER EL RENDIMIENTO DE LA APLICACIÓN
+        image_bytes = await file.read()  # leer bytes de la imagen
         yolo_model = ml_models.get('yolo')
         if yolo_model is None:
             raise HTTPException(status_code=500, detail="El modelo de detección no está disponible.")

@@ -1,5 +1,7 @@
 .PHONY: clean backend frontend
 
+make install:
+	uv sync
 clean:
 	rm -rf __pycache__
 	rm -rf app/__pycache__

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 class BoundingBox(BaseModel):
     x_min: float = Field(..., description="Coordenada x mínima del cuadro delimitador")
@@ -15,3 +15,15 @@ class Detection(BaseModel):
 class DetectionResponse(BaseModel):
     inference_time: float = Field(..., description="Tiempo que tomó realizar la inferencia en segundos")
     detections: List[Detection] = Field(..., description="Lista de detecciones en la imagen")
+
+class TaskResponse(BaseModel):
+    task_id: str = Field(..., description="ID de la tarea para seguimiento")
+    status: str = Field(..., description="Estado de la tarea (en progreso, completada, fallida)")
+    message: str = Field(..., description="Mensaje adicional sobre el estado de la tarea")
+
+class TaskIDResponse(BaseModel):
+    task_id: str
+    status: str 
+    result: Optional[DetectionResponse] = None
+    error: Optional[str] = None
+    message: str 
